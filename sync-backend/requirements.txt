@@ -1,0 +1,5 @@
+environs==9.5.0
+expiring_dict==1.1.0
+Flask==2.3.2
+Flask_Cors==4.0.0
+Flask_JSON==0.4.0
