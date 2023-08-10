@@ -1,0 +1,155 @@
+body {
+  width: 375px!important;
+  height: 600px!important;
+}
+.box {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.container {
+  flex-grow: 1;
+  width: 100%;
+}
+.trans{
+  transition: 0.3s;
+}
+.trans-slow{
+  transition: 0.6s;
+}
+.shrink0 {
+  flex-shrink: 0;
+}
+.w100 {
+  width: 100%;
+}
+.h100 {
+  height: 100%;
+}
+.hide-left{
+  margin-left: -100%!important;
+}
+.ml0{
+  margin-left: 0%;
+}
+
+.icon-item {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+.icon-item span {
+  flex: 1;
+}
+.favicon {
+  height: 16px;
+  width: 16px;
+  margin-right: 8px;
+}
+.one-line {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+.text-right {
+  text-align: right;
+}
+.mdui-list-item-one-line{
+  word-break: break-all;
+}
+#nav-history .list-group>a:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+#nav-history .list-group>a.active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.sublist .mdui-list-item{
+  padding-left: 16px;
+}
+.loading {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: rgba(50,50,50,1);
+  z-index: 99;
+}
+.loading i {
+  font: 3rem;
+}
+.rotate {
+  animation: rotation 2s infinite linear;
+}
+    @keyframes rotation { 
+        from { 
+            transform: rotate(0deg); 
+        } to { 
+            transform: rotate(360deg); 
+        }
+    }
+.fld-icon{
+  height: 1rem;
+  margin-right: 5px;
+}
+.fld-label{
+  display: flex;
+    align-items: center;
+  width: 100%;
+  padding: .5rem;
+}
+
+.search:not(focus) {
+  padding: 5px;
+  border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  border: 2px solid #F2F3F5;
+  background-color: #F2F3F5;
+  font-size: 14px;
+  outline: none;
+}
+
+.search:focus {
+  padding: 5px;
+  border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  border: 2px solid #F2F3F5;
+  background-color: #FFF;
+  font-size: 14px;
+  outline: none;
+}
+
+ul {
+  list-style:none;
+  padding-left: 1.75em;
+}
+
+.top-right {
+  font-size:small;
+  position:fixed;
+  right:1em;
+  top:1em;
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+}
+
+li {
+  padding: 3px;
+}
+
+li.selected {
+    background: #F2F3F5;
+}
+span.selected {
+    background: #F2F3F5;
+}
+
+.source {
+    color: #bbb;
+}

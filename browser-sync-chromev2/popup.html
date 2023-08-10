@@ -1,0 +1,119 @@
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="popup.css" rel="stylesheet">
+    <style>
+    </style>
+  </head>
+  <body class="fade">
+    <div id="hint" class="fade trans-slow position-fixed top-0 p-3 w100" style="z-index: 999;">
+      <div class="toast show align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+        </div>
+      </div>
+    </div>
+    <div id="setting-init-page" style="display: none;" class="fade box h100 px-2 py-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text">同步地址</span>
+        <input name="host" type="text" class="form-control" placeholder="http(s)://example.com">
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">账户名</span>
+        <input name="username" type="text" class="form-control" placeholder="username">
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">密码</span>
+        <input name="password" type="text" class="form-control" placeholder="password">
+      </div>
+      <div class="d-flex mb-3 justify-content-end align-items-center">
+        <span name="hint" class="fade flex-grow-1 text-danger text-center"></span>
+        <button type="button" class="d-inline btn btn-primary btn-func" func="login">登录</button>
+      </div>
+    </div>
+    <div id="setting-init-device-page" style="display: none;" class="fade box h100 px-2 py-4">
+      <div class="m-2">
+        <p>请选择或添加当前设备名:</p>
+      </div>
+      <div class="input-group mb-3">
+        <input name="device" type="text" class="form-control" placeholder="device">
+        <button type="button" class="d-inline btn btn-primary btn-func" func="addDevice">添加</button>
+      </div>
+      <div class="m-2">
+        <span name="hint" class="fade flex-grow-1 text-danger text-center"></span>
+      </div>
+      <div id="setting-device-list">
+
+      </div>
+    </div>
+    <div id="container" style="display: none;" class="container p-0 box h100">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="display: none;">
+          <button class="nav-link btn-func" id="nav-history-tab" data-bs-toggle="tab" data-bs-target="#nav-history" type="button" role="tab" aria-controls="nav-history" aria-selected="false" func="initHistoryPage">历史</button>
+          <button class="nav-link active" id="nav-setting-tab" data-bs-toggle="tab" data-bs-target="#nav-setting" type="button" role="tab" aria-controls="nav-setting" aria-selected="true">设置</button>
+        </div>
+      </nav>
+      <div class="tab-content box" id="nav-tabContent">
+        <div class="tab-pane fade box p-2" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab" tabindex="0">
+          <div id="history-main-page" class="fade box h100 history-page">
+            <div class="list-group mb-2">
+              <div href="#" class="list-group-item list-group-item-action icon-item btn-func" func="showLocalDeviceHistory">
+                <span>本设备浏览历史</span>
+                <i class="bi bi-arrow-right-short"></i>
+              </div>
+            </div>  
+            <div class="list-group mb-2">
+              <div href="#" class="list-group-item list-group-item-action icon-item btn-func" func="showAllDeviceHistory">
+                <span>所有设备浏览历史</span>
+                <i class="bi bi-arrow-right-short"></i>
+              </div>
+            </div>
+            <div class="device-list">
+              
+            </div>
+          </div>
+          <div id="history-list-page" class="fade box h100">
+            <div class="input-group mb-3">
+              <button class="btn active btn-func" type="button" func="showHistoryMainPage"><i class="bi bi-arrow-left"></i></button>
+              <input name="text" type="text" class="form-control" placeholder="筛选历史记录">
+              <button class="btn active btn-func" type="button" func="searchHistory">搜索</button>
+            </div>
+            <div class="mb-2">
+              <p class="history-device-name"></p>
+            </div>
+            <div class="overflow-y-auto">
+              <div id="history-item-list" class="list-group mb-2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade box p-2 show active" id="nav-setting" role="tabpanel" aria-labelledby="nav-setting-tab" tabindex="0">
+          <div id="setting-main-page" style="display: none;" class="box h100 setting-page">
+            <div class="mb-2">
+              <p>同步地址:<span name="host"></span></p>
+            </div>
+            <div class="mb-2">
+              <p>当前设备名:<span name="device"></span></p>
+            </div>
+            <div class="input-group justify-content-center mb-2">
+              <button id="btnImportAll" type="button" class="d-inline btn btn-primary btn-func" func="importAllHistory">导入以往历史</button>
+            </div>
+            <div class="input-group justify-content-center mb-4">
+              <button type="button" class="d-inline btn btn-danger btn-func" func="logout">登出</button>
+            </div>
+            <div class="input-group justify-content-center mb-4">
+              <button type="button" class="d-inline btn btn-danger btn-func" func="removeAccount">删除账户</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade box" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">...</div>
+        <div class="tab-pane fade box" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div>
+      </div>
+    </div>
+    <script src="lib/jquery.slim.min.js"></script>
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
