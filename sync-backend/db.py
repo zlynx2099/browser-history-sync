@@ -2,7 +2,7 @@ import sqlite3
 import util
 class DB:
     def __init__(self):
-        self.db = sqlite3.connect("data.db")
+        self.db = sqlite3.connect("data/data.db")
         self.db.execute("""
         CREATE TABLE IF NOT EXISTS "users" (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,

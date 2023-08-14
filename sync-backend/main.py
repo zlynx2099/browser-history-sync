@@ -210,4 +210,4 @@ def urls_list():
         device_id = device['id']
     data = get_db().get_urls(user_id,device_id,text,ts)
     return res(0,"",data)
-app.run("0.0.0.0",8080,debug=True)
+app.run("0.0.0.0",8080,debug=False)
