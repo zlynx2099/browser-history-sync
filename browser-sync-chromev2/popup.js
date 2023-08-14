@@ -130,7 +130,7 @@ var func = {
       return
     }
     if (res.code == 0){
-      let div = $("#form-device");
+      let div = $("#setting-device-list");
       div.html('')
       for (var device of res.data){
         let dom = $(`<div class="list-group mb-2"><div class="list-group-item list-group-item-action btn-func text-center"></div></div>`)
