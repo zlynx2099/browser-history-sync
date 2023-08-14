@@ -65,6 +65,8 @@ class DB:
     
     def get_user(self,username):
         return self._queryone("select * from users where username = ? limit 1",[username])
+    def get_user_by_id(self,user_id):
+        return self._queryone("select * from users where id = ? limit 1",[user_id])
     
     def insert_user(self,username,salt,password):
         user_id = self._execute("insert into users (username,salt,password) values(?,?,?);",

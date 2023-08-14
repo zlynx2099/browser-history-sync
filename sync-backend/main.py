@@ -6,7 +6,7 @@ from db import DB
 from expiring_dict import ExpiringDict
 import util
 from environs import Env
-import json
+import json,time
 
 app = Flask(__name__)
 CORS(app)
@@ -43,16 +43,32 @@ def device_auth(req: Request):
             return device
     return None
 
+@app.post('/')
+@as_json
+def ok():
+    return res(0,"")
+
 @app.post('/auth/login')
 @as_json
 def authLogin():
     j = request.json
     username = util.get(j,'username',None)
     password = util.get(j,'password',None)
+    expire_mode = util.get(j,"expireMode","1")
     if util.is_empty(username) or util.is_empty(password):
         return res(-1,"缺少必要参数")
+    expire_mode = str(expire_mode)
     username = str(username)
     password = str(password)
+    ttl = 60*60*24
+    if expire_mode == "2":
+        ttl = 7*60*60*24
+    elif expire_mode == "3":
+        ttl = 30*60*60*24
+    elif expire_mode == "4":
+        ttl = 365*60*60*24
+    elif expire_mode == "5":
+        ttl = 99*365*60*60*24
     u = get_db().get_user(username)
     if u is None:
         #自动注册
@@ -61,17 +77,48 @@ def authLogin():
             password = util.gen_password(password,salt)
             user_id = get_db().insert_user(username,salt,password)
             token = str(user_id) + "_" + util.gen_password(util.gen_key(32),"")
-            cache.ttl(token,user_id,60*60*24)
+            cache.ttl(token,user_id,ttl)
             return res(0,"",{"token":token})
         else:
             return res(-1,"用户不存在")
     else:
         if util.gen_password(password,u['salt']) == u['password']:
             token = str(u['id']) + "_" + util.gen_password(util.gen_key(32),"")
-            cache.ttl(token,u['id'],60*60*24)
-            return res(0,"",{"token":token})
+            cache.ttl(token,u['id'],ttl)
+            return res(0,"",{"token":token,"expireTime":int((time.time()+ttl)*1000)})
         return res(-1,"密码错误")
-    
+
+@app.post("/auth/authorize")
+@as_json
+def authAuthoirze():
+    device = device_auth(request)
+    if not device:
+        return UNAUTHORIZED
+    u = get_db().get_user_by_id(device['user_id'])
+    if u is None:
+        return res(-1,"用户不存在")
+    j = request.json
+    password = util.get(j,'password',None)
+    expire_mode = util.get(j,"expireTime","1")
+    if util.is_empty(password):
+        return res(-1,"缺少必要参数")
+    expire_mode = str(expire_mode)
+    password = str(password)
+    ttl = 60*60*24
+    if expire_mode == "2":
+        ttl = 7*60*60*24
+    elif expire_mode == "3":
+        ttl = 30*60*60*24
+    elif expire_mode == "4":
+        ttl = 365*60*60*24
+    elif expire_mode == "5":
+        ttl = 99*365*60*60*24
+    if util.gen_password(password,u['salt']) == u['password']:
+        token = str(u['id']) + "_" + util.gen_password(util.gen_key(32),"")
+        cache.ttl(token,device['user_id'],ttl)
+        return res(0,"",{"token":token,"expireTime":int((time.time()+ttl)*1000)})
+    return res(-1,"密码错误")
+
 @app.post('/auth/logout')
 @as_json
 def authLogout():
@@ -155,7 +202,7 @@ def urls_list():
     j = request.json
     text = util.get(j,"text",None)
     ts = util.get(j,'ts',None)
-    device_name = util.get(j,"device_name",None)
+    device_name = util.get(j,"device",None)
     user_id = device['user_id']
     device_id = None
     if device_name and len(device_name) > 0:
