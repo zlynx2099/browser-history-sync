@@ -92,7 +92,7 @@
             let { dbName, dbVersion, objectStores } = this;
             let _this = this;
             return new Promise(function (resolve, reject) {
-                let request = indexedDB.open(dbName, dbVersion);
+                let request = window.indexedDB.open(dbName, dbVersion);
                 request.onerror = function (event) {
                     console.log("数据库", dbName, "创建/打开失败！");
                     reject({
@@ -675,7 +675,8 @@
             name = name ? name : this.dbName;
             return new Promise(async function (resolve, reject) {
                 try {
-                    indexedDB.deleteDatabase(name);
+   
+                    window.indexedDB.deleteDatabase(name);
                     resolve(true);
                 }
                 catch (err) {

@@ -1,3 +1,4 @@
 sync-backend/.vscode
 sync-backend/__pycache__
 sync-backend/data.db
+browser-sync-chromev3
