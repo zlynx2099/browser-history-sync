@@ -33,10 +33,6 @@ async function Init(){
   }
   inited = true;
   func.startWatching()
-  if (config && config['host'] && config['device_token']){
-    chromeApi.badgeOn()
-    await func.uploadAllHistory()
-  }
 }
 
 func = {
@@ -92,6 +88,8 @@ func = {
     if (config && config['host'] && config['device_token']){
       chrome.tabs.onUpdated.addListener(func.onUpdated)
       chrome.history.onVisited.addListener(func.onVisited)
+      chromeApi.badgeOn()
+      func.uploadAllHistory()
     }else{
       chrome.tabs.onUpdated.removeListener(func.onUpdated)
       chrome.history.onVisited.removeListener(func.onVisited)
