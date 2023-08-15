@@ -101,33 +101,38 @@ class PageUtil {
     }
     async searchHistory(text,ts,device){
         let config = await this.chromeApi.getConfig()
-        return await this._fetch(config['host']+"/urls/list",null,config['device_token'],{
+        return await this._fetch(config['host']+"/urls/list",config['auth']??null,null,{
             "text":text,
             "ts":ts,
             "device":device
         })
     }
     async importAllHistory(){
-        let config = await this.chromeApi.getConfig()
         let data = await this.chromeApi.searchAllHistroy();
         let records = [];
         for (var d of data){
           records.push({
             "t": d.title,
             "u": d.url,
-            "v": parseInt(1000 * d.lastVisitTime)
+            "v": parseInt(d.lastVisitTime/1000)
           })
         }
         return await this.addHistorys(records)
     }    
-    async addHistory(url,title,lastVisitTime){
-        return await this._fetch(config['host'] + "/urls/add",null,config['device_token']??null,[{
-        "t": title,
-        "u": url,
-        "v": parseInt(1000 * lastVisitTime)
-        }],null)
+    async addHistory(url,title,lastVisitTime,status){
+        let config = await this.chromeApi.getConfig()
+        return await this._fetch(config['host'] + "/urls/add",null,config['device_token']??null,{
+            "r":[{
+                "t": title,
+                "u": url,
+                "v": lastVisitTime,
+                "s": status,
+            }]},null)
     }    
     async addHistorys(records){
-        return await this._fetch(config['host'] + "/urls/add",null,config['device_token']??null,records,null)
+        let config = await this.chromeApi.getConfig()
+        return await this._fetch(config['host'] + "/urls/add",null,config['device_token']??null,{
+            "r":records,
+        },null)
     }
 }

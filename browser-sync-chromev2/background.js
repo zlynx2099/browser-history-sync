@@ -38,45 +38,37 @@ async function Init(){
 func = {
   onUpdated: function(tabId, changeInfo, tab){
     (async ()=>{
-      if (tab.url == "chrome://newtab/"){
+      if (tab.url.startsWith("chrome://")){
         return
       }
       if (changeInfo.status && changeInfo.status == "complete"){
-        let item = await DB.queryBykeypath(["urls"],tab.url)
-        if (!item){
+        let visit = await chromeApi.getLastVisit(tab.url)
+        if (visit){
           item = {
             "url":tab.url,
             "title":tab.title,
-            "lastVisitTime":parseInt(tab.lastVisitTime*1000),
-            "status":0,
+            "lastVisitTime":parseInt(visit.visitTime),
+            "status":1,
           }
-        }
-        if (!tab){
-          console.log(tabId,changeInfo,tab)
-        }
-        if (tab.title){
-          item.title = tab.title
-        }
-        item.status = 1
-        await DB.updateData(["urls"], [item])
-        let j = await pagefunc.addHistory(item['url'],item['title'],item['lastVisitTime'])
-        if (j.code == 0){
-          await DB.deleteData(["urls"], [item.url])
+          await pagefunc.addHistory(item['url'],item['title'],item['lastVisitTime'],item["status"])
         }
       }
     })()
   },
   onVisited: function(tab) {
     (async ()=>{
+      if (tab.url.startsWith("chrome://")){
+        return
+      }
       await DB.updateData(["urls"], [{
         "url":tab.url,
         "title":tab.title,
-        "lastVisitTime":parseInt(tab.lastVisitTime*1000),
+        "lastVisitTime":tab.lastVisitTime?parseInt(tab.lastVisitTime/1000):new Date().getTime()*1000,
         "status":0,
       }])
       await new Promise(r => setTimeout(r, 15000));
       let item = await DB.queryBykeypath(["urls"],tab.url)
-      if (item && item.status == 0 && item.lastVisitTime == tab.lastVisitTime){
+      if (item && item.status == 0 && item.lastVisitTime == parseInt(tab.lastVisitTime/1000)){
         let j = await pagefunc.addHistory(item['url'],item['title'],item['lastVisitTime'])
         if (j.code == 0){
           await DB.deleteData(["urls"], [item.url])
@@ -87,12 +79,12 @@ func = {
   startWatching: () => {
     if (config && config['host'] && config['device_token']){
       chrome.tabs.onUpdated.addListener(func.onUpdated)
-      chrome.history.onVisited.addListener(func.onVisited)
+      //chrome.history.onVisited.addListener(func.onVisited)
       chromeApi.badgeOn()
-      func.uploadAllHistory()
+      //func.uploadAllHistory()
     }else{
       chrome.tabs.onUpdated.removeListener(func.onUpdated)
-      chrome.history.onVisited.removeListener(func.onVisited)
+      //chrome.history.onVisited.removeListener(func.onVisited)
     }
   },
   uploadAllHistory: async() => {
@@ -107,7 +99,7 @@ func = {
         records.push({
           "t": d.title,
           "u": d.url,
-          "v": parseInt(1000 * d.lastVisitTime)
+          "v": parseInt(d.lastVisitTime/1000)
         })
       }
       let j = await pagefunc.addHistorys(records)
@@ -118,7 +110,6 @@ func = {
         }
         await DB.deleteData(["urls"],delItems)
       }else{
-        console.log(j.msg)
         break
       }
     }
@@ -128,3 +119,5 @@ func = {
 //
 //关闭tab或者加载完成时,上传数据
 //后退更新lastchanged
+//todo 302,未complete status = 2
+//

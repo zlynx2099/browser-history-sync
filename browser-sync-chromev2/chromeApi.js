@@ -6,6 +6,17 @@ class ChromeApi{
     async saveConfig(cfg){
         await chrome.storage.local.set({"config":cfg})
     }
+    async getLastVisit(url){
+      let visits = await this._apiGetVisits(url)
+      return visits?visits[visits.length-1]:null
+    }
+    async _apiGetVisits(url){
+      return new Promise((res,rej)=>{
+        chrome.history.getVisits({"url":url},(data)=>{
+          res(data);
+        })
+      })
+    }
     async _apiHistorySearch(text,startTime,endTime,maxResults){
       return new Promise((res,rej)=>{
         chrome.history.search({text:text,startTime:startTime,endTime:endTime,maxResults:maxResults},(data)=>{
