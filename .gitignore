@@ -4,3 +4,5 @@ sync-backend/data.db
 browser-sync-chromev3
 go-sync-backend/__debug*
 go-sync-backend/.vscode
+go-sync-backend/sync-backend*
+*.zip

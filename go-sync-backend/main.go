@@ -15,6 +15,7 @@ import (
 var (
 	autoRegister bool
 	dsn          string
+	port         int
 )
 
 func auth(r *http.Request) int {
@@ -57,6 +58,7 @@ func JsonResponse(w http.ResponseWriter, code int, msg string, data interface{})
 func main() {
 	autoRegister = *flag.Bool("autoRegister", true, "auto create user when log in")
 	dsn = *flag.String("dsn", "", "mysql database url eg: user:password@tcp(ip:port)/database")
+	port = *flag.Int("port", 8080, "web server listen port")
 
 	if database.DATABASE, _ = database.NewDB(dsn); database.DATABASE == nil {
 		panic("数据库未初始化")
@@ -258,5 +260,5 @@ func main() {
 		list := database.DATABASE.GetUrls(userId, deviceId, text, ts)
 		JsonResponse(w, 0, "", list)
 	})
-	http.ListenAndServe("0.0.0.0:8080", nil)
+	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", port), nil)
 }
