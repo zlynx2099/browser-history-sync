@@ -21,6 +21,33 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="changePassword" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">修改密码</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <span class="input-group-text">旧密码</span>
+              <input name="password" type="password" class="form-control" placeholder="password">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">新密码</span>
+              <input name="password" type="password" class="form-control" placeholder="password">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">确认新密码</span>
+              <input name="password" type="password" class="form-control" placeholder="password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="top-page" class="pager">
       <div id="form-login" class="fade box h100 px-2 py-4" tabindex="1">
         <div class="input-group mb-3">
@@ -80,7 +107,8 @@
             <option value="5">永不验证</option>
           </select>
         </div>
-        <div class="d-flex mb-3 justify-content-end align-items-center">
+        <div class="d-flex mb-3 justify-content-between align-items-center">
+          <button type="button" class="d-inline btn btn-danger btn-func" func="logout">退出</button>
           <span></span>
           <button type="button" class="d-inline btn btn-primary btn-func" func="authorize">登录</button>
         </div>
@@ -89,6 +117,7 @@
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button id="nav-history-tab" class="nav-link btn-func active" data-bs-toggle="tab" data-bs-target="#nav-history" type="button" role="tab" aria-controls="nav-history" aria-selected="true" func="initMainPage">历史</button>
+            <button id="nav-bookmark-tab" class="nav-link btn-func" data-bs-toggle="tab" data-bs-target="#nav-bookmark" type="button" role="tab" aria-controls="nav-bookmark" aria-selected="false" func="initBookMarkPage">书签</button>
             <button id="nav-setting-tab" class="nav-link btn-func"  data-bs-toggle="tab" data-bs-target="#nav-setting" type="button" role="tab" aria-controls="nav-setting" aria-selected="false" func="initSettingPage">设置</button>
           </div>
         </nav>
@@ -119,6 +148,16 @@
               </div>
             </div>
           </div>
+          <div id="nav-bookmark" class="tab-pane fade box p-2 pager" role="tabpanel" aria-labelledby="nav-setting-tab" tabindex="3">
+            <div id="bookmark-main-page" class="fade box h100 show active" tabindex="1">
+              <div class="list-group mb-2">
+                <div href="#" class="list-group-item list-group-item-action icon-item btn-func" func="showAllDeviceHistory">
+                  <span>文件夹</span>
+                  <i class="bi bi-arrow-right-short"></i>
+                </div>
+              </div>
+            </div>
+          </div>
           <div id="nav-setting" class="tab-pane fade box p-2" role="tabpanel" aria-labelledby="nav-setting-tab" tabindex="2">
             <div id="form-setting" class="box h100 setting-page">
               <div class="mb-2">
@@ -127,10 +166,19 @@
               <div class="mb-2">
                 <p class="d-flex justify-content-end align-items-center">当前设备名:
                   <span name="device" class="flex-grow-1"></span>
-                  <button id="btnImportAll" type="button" class="d-inline btn btn-primary btn-func" func="importAllHistory">导入以往历史</button>
                 </p>
               </div>
-              <div class="justify-content-around m-2 d-flex">
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">自动同步历史</label>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">自动同步书签</label>
+              </div>
+              <div class="d-grid gap-3">
+                <button id="btnImportAll" type="button" class="d-inline btn btn-primary btn-func" func="importAllHistory">导入以往历史</button>
+                <button type="button" class="d-inline btn btn-primary btn-func" data-bs-toggle="modal" data-bs-target="#changePassword">修改密码</button>
                 <button type="button" class="d-inline btn btn-danger btn-func" func="logout">登出</button>
               </div>
             </div>

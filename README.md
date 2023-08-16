@@ -11,8 +11,12 @@ docker run -p 8000:8080 -v $CWD:/app browser-sync-backend
 load extension from "browser-sync-chromev2" folder
 
 # todo
+- [ ] favicon support?
+- [ ] bookmark support?
 - [ ] UI Beautify
 - [ ] Account.ChangePassword
 - [ ] Kiwi UI Adaption
 - [ ] Firefox Support
 - [ ] ...
+
+

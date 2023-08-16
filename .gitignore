@@ -6,3 +6,4 @@ go-sync-backend/__debug*
 go-sync-backend/.vscode
 go-sync-backend/sync-backend*
 *.zip
+todo.md
